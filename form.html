@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   
+</head>
+
+<body>
+    
+    <form>
+        <fieldset style="border-radius: 5px;">
+            <legend>Student Infromation</legend>
+        Enter a Name:-
+        <input type="text" name="name" id="name" oninput="return val_name()">
+        <span id="errname" style="color: red;"></span><br><br>
+        Enter a Email:- 
+        <input type="email" name="email" id="email" oninput="return val_email()">
+        <span id="erremail" style="color: red;"></span>
+        <br><br>
+        Select a Gender:- 
+        <input type="radio" name="gen" id="female">Female 
+        <input type="radio" name="gen" id="male">Male
+        <span id="errgen" style="color: red;"></span> <br><br>
+        Enter a contact no:-
+        <input type="text" name="phh1" id="phh1" onclick="return val_contact()">
+        <span id="errcno" style="color: red;"></span>
+        <br><br>
+        <input type="button" value="Submit"  onclick="return check()">
+        <div id="disp"></div>
+    </form>
+</fieldset>
+        <script>
+            myList=[];
+            function val_name()
+            {
+                var nn=document.getElementById("name").value 
+                var n1=/^[A-Za-z._\s]+$/
+                if(nn.match(n1))
+                {
+                    errname.innerHTML=" ";
+                    return true;
+                }
+                else
+                {
+                    errname.innerHTML="**Enter a Valid Name";
+                    return false;
+                }
+            }
+            function val_email()
+            {
+                var ee=document.getElementById("email").value
+                var e1=/^[A-Za-z0-9_.]{2,}[@][A-Za-z]{2,}[.][A-Za-z.]{2,}$/
+                if(ee.match(e1))
+                {
+                    erremail.innerHTML=""
+                    return true;
+                }
+                else
+                {
+                    erremail.innerHTML="**enter a valid email";
+                    return false;
+                }
+            }
+            function val_gen()
+            {
+                if(document.getElementsByName("gen")[0].checked==false && document.getElementsByName("gen")[1].checked==false)
+                {
+                    errgen.innerHTML="***you must select male or female";
+                    return false;
+                }
+                else
+                {
+                    errgen.innerHTML=""
+                    return true;
+                }
+            }
+            function val_contact()
+            {
+                var phone=document.getElementById("phh1").value
+                    var p1=/^(0)\d{10}$/
+                    if(phone.match(p1))
+                    {
+                        errcno.innerHTML=" ";
+                        return true;
+                    }
+                    else
+                    {
+                        errcno.innerHTML="**enter a valid phone no";
+                    return false;
+                    }
+            }
+            function check()
+            {
+                val_gen();
+                if(val_name()==true || val_email()==true ||  val_contact()==true)
+                {
+                        disp.innerHTML="validate successfully";
+                        disp.style.color="green";
+                        localstrg();
+                        return true;
+                }   
+                else
+                {
+                    disp.innerHTML="Invalid Data"
+                    disp.style.color="red";
+                    return false;
+                }
+
+                function localstrg()
+                {
+                
+            //   console.log(myList);
+                nm=document.getElementById("name");
+                em=document.getElementById("email");
+                if(document.getElementById("male").checked==true)
+                {
+                    gen="male";
+                }
+                else
+                {
+                    gen="female";
+                }
+                cn=document.getElementById("phh1");
+
+                myObj={
+                    name:nm.value,
+                    Email:em.value,
+                    gender:gen,
+                    contact:cn.value
+                }
+                myList.push(myObj);
+                const arrayString = JSON.stringify(myList);
+                localStorage.setItem('data', arrayString);
+    
+                const arrayString1 = localStorage.getItem('data');
+                 const languages1 = JSON.parse(arrayString1);
+    
+            str="<table border='1px'><tr><td>Name</td><td> Email</td><td>Gender</td><td>Contact No.</td></tr>";
+            for(i=0;i<languages1.length;i++)
+            {
+                str+="<tr>"
+                str+="<td>"+languages1[i].name+"</td><td>"+languages1[i].Email+"</td><td>"+languages1[i].gender+"</td><td>"+languages1[i].contact+"</td>";
+                str+="</tr>"
+            }
+            str+="</table>";
+            document.getElementById("demo").innerHTML=str;
+            
+            }
+        }
+     </script>
+        <div id="demo"></div>
+     <script>
+            const arrayString1 = localStorage.getItem('data');
+                 const languages1 = JSON.parse(arrayString1);
+    
+            str="<table border='1px'><tr><td>Name</td><td> Email</td><td>Gender</td><td>Contact No.</td></tr>";
+            for(i=0;i<languages1.length;i++)
+            {
+                str+="<tr>"
+              str+="<td>"+languages1[i].name+"</td><td>"+languages1[i].Email+"</td><td>"+languages1[i].gender+"</td><td>"+languages1[i].contact+"</td>";
+                str+="</tr>"
+            }
+            str+="</table>";
+            document.getElementById("demo").innerHTML=str;
+        </script>
+</body>
+</html>
